@@ -10,15 +10,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
@@ -44,11 +44,14 @@ class MainActivity : ComponentActivity() {
                         false
                     )
                 }
-                NavHost(navController = navController, startDestination = "inicio") {
-                    composable("inicio") { PantallaInicial(navController) }
-                    composable("reservar") { ReservarScreen(parkingSpaces) }
-                    composable("horarios") { CerrarSessionScreen() }
-                    composable("mapa") { MapaScreen(parkingSpaces) }
+                NavHost(navController = navController, startDestination = Pantallas.Inicio.route) {
+                    composable(Pantallas.Inicio.route) { PantallaInicial(navController) }
+                    composable(Pantallas.IniciarSesion.route) { IniciarSesion(navController) }
+                    composable(Pantallas.Registrarse.route) { Registrarse(navController) }
+                    composable(Pantallas.MenuPrincipal.route) { MenuPrincipal(navController) }
+                    composable("reservar") { ReservarScreen(navController, parkingSpaces) }
+                    composable("cerrarSesion") { CerrarSessionScreen(navController) }
+                    composable("mapa") { MapaScreen(navController, parkingSpaces) }
                 }
             }
         }
@@ -71,7 +74,81 @@ fun PantallaInicial(navController: NavController) {
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 40.dp)
             )
-            MenuPrincipal(navController = navController)
+            Button(onClick = { navController.navigate("iniciarSesion") }) {
+                Text(text = "Iniciar Sesion")
+            }
+            Button(onClick = { navController.navigate("registrarse") }) {
+                Text(text = "Registrarse")
+            }
+        }
+    }
+}
+
+@Composable
+fun IniciarSesion(navController: NavController) {
+    val usuario = remember { mutableStateOf("") }
+    val contrasena = remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
+        OutlinedTextField(
+            value = usuario.value,
+            onValueChange = { usuario.value = it },
+            label = { Text("Usuario") }
+        )
+
+        OutlinedTextField(
+            value = contrasena.value,
+            onValueChange = { contrasena.value = it },
+            label = { Text("Contraseña") }
+        )
+
+        Button(onClick = { /* Implementar inicio de sesión */
+            navController.navigate(Pantallas.MenuPrincipal.route)
+        }) {
+            Text("Iniciar sesión")
+        }
+    }
+}
+
+@Composable
+fun Registrarse(navController: NavController) {
+    val usuario = remember { mutableStateOf("") }
+    val contrasena = remember { mutableStateOf("") }
+    val confirmarContrasena = remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+
+        ) {
+        OutlinedTextField(
+            value = usuario.value,
+            onValueChange = { usuario.value = it },
+            label = { Text("Usuario") }
+        )
+
+        OutlinedTextField(
+            value = contrasena.value,
+            onValueChange = { contrasena.value = it },
+            label = { Text("Contraseña") }
+        )
+
+        OutlinedTextField(
+            value = confirmarContrasena.value,
+            onValueChange = { confirmarContrasena.value = it },
+            label = { Text("Confirmar contraseña") }
+        )
+
+        Button(onClick = { /* Implementar registro */
+            navController.navigate(Pantallas.MenuPrincipal.route)
+
+        }) {
+            Text("Registrarse")
         }
     }
 }
@@ -81,8 +158,11 @@ fun MenuPrincipal(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(horizontal = 30.dp)
-    ) {
+        modifier = Modifier.padding(horizontal = 25.dp)
+            .padding(50.dp)
+            .fillMaxSize()
+
+    )  {
         BotonMenu(texto = "Reservar Parqueadero") {
             navController.navigate("reservar")
         }
@@ -133,7 +213,7 @@ fun ParkingSpaceButton(isOccupied: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun ReservarScreen(parkingSpaces: MutableList<Boolean>) {
+fun ReservarScreen(navController: NavHostController, parkingSpaces: MutableList<Boolean>) {
     val columnCount = 3
     val rowCount = parkingSpaces.size / columnCount
 
@@ -160,7 +240,7 @@ fun ReservarScreen(parkingSpaces: MutableList<Boolean>) {
 }
 
 @Composable
-fun MapaScreen(parkingSpaces: MutableList<Boolean>) {
+fun MapaScreen(navController: NavHostController, parkingSpaces: MutableList<Boolean>) {
     val columnCount = 3
     val rowCount = parkingSpaces.size / columnCount
 
@@ -193,7 +273,7 @@ fun ParkingSpaceBox(isOccupied: Boolean, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CerrarSessionScreen() {
+fun CerrarSessionScreen(navController: NavController) {
     Card(
         modifier = Modifier
             .padding(14.dp)

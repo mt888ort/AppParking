@@ -28,9 +28,9 @@ class MainActivity : ComponentActivity() {
                 val parkingViewModel: ParkingViewModel = viewModel()
                 NavHost(navController = navController, startDestination = "inicio") {
                     composable("inicio") { PantallaInicial(navController) }
-                    composable("reservar") { ReservarScreen(parkingViewModel.parkingSpaces) }
-                    composable("Cerrar Sesion") { CerrarSessionScreen() }
-                    composable("mapa") { MapaScreen(parkingViewModel.parkingSpaces) }
+                    composable("reservar") { ReservarScreen(navController, parkingViewModel.parkingSpaces) }
+                    composable("Cerrar Sesion") { CerrarSessionScreen(navController) }
+                    composable("mapa") { MapaScreen(navController, parkingViewModel.parkingSpaces) }
                 }
             }
         }
