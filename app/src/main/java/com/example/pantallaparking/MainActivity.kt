@@ -30,7 +30,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             PantallaParkingTheme {
                 val navController = rememberNavController()
-                val parkingSpaces = remember { mutableStateListOf<Boolean>(false, false, true, false, true, false, true, true, false, false) }
+                val parkingSpaces = remember {
+                    mutableStateListOf<Boolean>(
+                        false,
+                        false,
+                        true,
+                        false,
+                        true,
+                        false,
+                        true,
+                        true,
+                        false,
+                        false
+                    )
+                }
                 NavHost(navController = navController, startDestination = "inicio") {
                     composable("inicio") { PantallaInicial(navController) }
                     composable("reservar") { ReservarScreen(parkingSpaces) }
@@ -86,7 +99,10 @@ fun MenuPrincipal(navController: NavController) {
 fun BotonMenu(texto: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(Color.LightGray, contentColor = MaterialTheme.colorScheme.primary),
+        colors = ButtonDefaults.buttonColors(
+            Color.LightGray,
+            contentColor = MaterialTheme.colorScheme.primary
+        ),
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp)
@@ -113,21 +129,6 @@ fun ParkingSpaceButton(isOccupied: Boolean, onClick: () -> Unit) {
             .height(70.dp) // Aumenta la altura del botón
     ) {
         Text(text = if (isOccupied) " Ocupado  " else "Disponible")
-    }
-}
-
-@Composable
-fun ReservarScreen() {
-    val parkingSpaces = remember { mutableStateListOf<Boolean>(false, false, true, false, true, false, true, true, false, false) }
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        parkingSpaces.forEachIndexed { index, isOccupied ->
-            ParkingSpaceButton(isOccupied = isOccupied, onClick = {
-                if (!isOccupied) {
-                    parkingSpaces[index] = true
-                }
-            })
-        }
     }
 }
 
@@ -198,7 +199,7 @@ fun CerrarSessionScreen() {
             .padding(14.dp)
             .padding(14.dp),
         shape = RoundedCornerShape(20.dp),
-        ) {
+    ) {
 
     }
 }
