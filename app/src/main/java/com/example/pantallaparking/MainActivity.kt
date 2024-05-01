@@ -3,6 +3,7 @@ package com.example.navegacionaplimovil
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -22,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
+import com.example.pantallaparking.R
 import com.example.pantallaparking.ui.theme.PantallaParkingTheme
 
 class MainActivity : ComponentActivity() {
@@ -69,6 +72,13 @@ fun PantallaInicial(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Image(
+                painter = painterResource(id = R.drawable.escudo),
+                contentDescription = "Escudo",
+                modifier = Modifier
+                    .size(500.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
             Text(
                 text = "¡Bienvenido al Parqueadero!",
                 style = MaterialTheme.typography.headlineMedium,
@@ -88,6 +98,7 @@ fun PantallaInicial(navController: NavController) {
 fun IniciarSesion(navController: NavController) {
     val usuario = remember { mutableStateOf("") }
     val contrasena = remember { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
