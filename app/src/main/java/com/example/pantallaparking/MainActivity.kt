@@ -156,7 +156,7 @@ fun Registrarse(navController: NavController) {
         )
 
         Button(onClick = { /* Implementar registro */
-            navController.navigate(Pantallas.MenuPrincipal.route)
+            navController.navigate(Pantallas.IniciarSesion.route)
 
         }) {
             Text("Registrarse")
@@ -172,11 +172,20 @@ fun MenuPrincipal(navController: NavController) {
         modifier = Modifier.padding(horizontal = 25.dp)
             .padding(50.dp)
             .fillMaxSize()
-
     )  {
+        Image(
+            painter = painterResource(id = R.drawable.reservacion),
+            contentDescription = "Imagen de Reservación",
+            modifier = Modifier.size(250.dp) // Ajusta el tamaño según tus necesidades
+        )
         BotonMenu(texto = "Reservar Parqueadero") {
             navController.navigate("reservar")
         }
+        Image(
+            painter = painterResource(id = R.drawable.ubicacion),
+            contentDescription = "Imagen de ubicación",
+            modifier = Modifier.size(250.dp) // Ajusta el tamaño según tus necesidades
+        )
         BotonMenu(texto = "Ver Mapa") {
             navController.navigate("mapa")
         }
@@ -247,6 +256,9 @@ fun ReservarScreen(navController: NavHostController, parkingSpaces: MutableList<
                 }
             }
         }
+        Button(onClick = { navController.navigate("MenuPrincipal") }) {
+            Text("Siguiente")
+        }
     }
 }
 
@@ -267,6 +279,9 @@ fun MapaScreen(navController: NavHostController, parkingSpaces: MutableList<Bool
                     ParkingSpaceBox(isOccupied = isOccupied, modifier = Modifier.weight(1f))
                 }
             }
+        }
+        Button(onClick = { navController.navigate("MenuPrincipal") }) {
+            Text("Siguiente")
         }
     }
 }
