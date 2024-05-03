@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import com.example.pantallaparking.R
+import com.example.pantallaparking.R.drawable.actualizar
 import com.example.pantallaparking.ui.theme.PantallaParkingTheme
 
 class MainActivity : ComponentActivity() {
@@ -52,6 +53,9 @@ class MainActivity : ComponentActivity() {
                     composable(Pantallas.IniciarSesion.route) { IniciarSesion(navController) }
                     composable(Pantallas.Registrarse.route) { Registrarse(navController) }
                     composable(Pantallas.MenuPrincipal.route) { MenuPrincipal(navController) }
+                    composable(Pantallas.Menu.route) { Menu(navController) }
+                    composable(Pantallas.RegistrationScreen.route) { RegistrationScreen(navController) }
+                    composable(Pantallas.Actualizar.route) { Actualizar(navController) }
                     composable("reservar") { ReservarScreen(navController, parkingSpaces) }
                     composable("cerrarSesion") { CerrarSessionScreen(navController) }
                     composable("mapa") { MapaScreen(navController, parkingSpaces) }
@@ -118,7 +122,7 @@ fun IniciarSesion(navController: NavController) {
         )
 
         Button(onClick = { /* Implementar inicio de sesión */
-            navController.navigate(Pantallas.MenuPrincipal.route)
+            navController.navigate(Pantallas.Menu.route)
         }) {
             Text("Iniciar sesión")
         }
@@ -136,7 +140,7 @@ fun Registrarse(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
 
-        ) {
+    ) {
         OutlinedTextField(
             value = usuario.value,
             onValueChange = { usuario.value = it },
@@ -160,6 +164,190 @@ fun Registrarse(navController: NavController) {
 
         }) {
             Text("Registrarse")
+        }
+    }
+}
+@Composable
+fun Menu(navController: NavController) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.registrar),
+            contentDescription = null,
+            modifier = Modifier
+                .size(100.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        BotonMenu(texto = "Registrar Vehiculo") {
+            navController.navigate("RegistrationScreen")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Image(
+            painter = painterResource(id = actualizar),
+            contentDescription = "Imagen de Reservación",
+            modifier = Modifier.size(100.dp) // Ajusta el tamaño según tus necesidades
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        BotonMenu(texto = "Actualizar Datos") {
+            navController.navigate("Actualizar")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Image(
+            painter = painterResource(id = R.drawable.info),
+            contentDescription = "Imagen de Informacion",
+            modifier = Modifier.size(100.dp) // Ajusta el tamaño según tus necesidades
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        BotonMenu(texto = "Informacion") {
+            navController.navigate("reservar")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        BotonMenu(texto = "Mapas") {
+            navController.navigate("MenuPrincipal")
+        }
+    }
+}
+@Composable
+fun RegistrationScreen(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(
+            text = "Registrar Vehiculo",
+            style = MaterialTheme.typography.bodyMedium
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Placa Del Vehiculo") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Marca y Modelo") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("DD/MM/AA") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Hora De Ingreso") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Nombre Propietario") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Numero Celular") }
+        )
+
+        Text(
+            text = "Los Campos Marcados Son * Obligatorio",
+            color = Color.Red
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(onClick = {  navController.navigate("Menu") }) {
+                Text("Registrar")
+            }
+
+            Button(onClick = {  navController.navigate("Menu") }) {
+                Text("Cancelar")
+
+
+            }
+        }
+    }
+}
+@Composable
+fun Actualizar(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(
+            text = "Actualizar Vehiculo",
+            style = MaterialTheme.typography.bodyMedium
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Placa Del Vehiculo") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Marca y Modelo") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("DD/MM/AA") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Hora De Ingreso") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Nombre Propietario") }
+        )
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text("Numero Celular") }
+        )
+
+        Text(
+            text = "Los Campos Marcados Son * Obligatorio",
+            color = Color.Red
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(onClick = {  navController.navigate("Menu") }) {
+                Text("Actualizar")
+            }
+
+            Button(onClick = {  navController.navigate("Menu") }) {
+                Text("Cancelar")
+            }
         }
     }
 }
