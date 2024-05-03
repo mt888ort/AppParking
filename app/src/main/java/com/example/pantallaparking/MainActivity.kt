@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -26,6 +27,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import com.example.pantallaparking.R
 import com.example.pantallaparking.R.drawable.actualizar
+import com.example.pantallaparking.ui.IniciarSesionViewModel
+import com.example.pantallaparking.ui.ParkingViewModel
+import com.example.pantallaparking.ui.RegistrarseViewModel
 import com.example.pantallaparking.ui.theme.PantallaParkingTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,7 +38,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             PantallaParkingTheme {
                 val navController = rememberNavController()
-                val parkingSpaces = remember {
+                val parkingViewModel: ParkingViewModel = viewModel()
+                val iniciarSesionViewModel: IniciarSesionViewModel = viewModel()
+                val registrarseViewModel: RegistrarseViewModel = viewModel()
+                /*val parkingSpaces = remember {
                     mutableStateListOf<Boolean>(
                         false,
                         false,
@@ -47,18 +54,19 @@ class MainActivity : ComponentActivity() {
                         false,
                         false
                     )
-                }
+                }*/
                 NavHost(navController = navController, startDestination = Pantallas.Inicio.route) {
                     composable(Pantallas.Inicio.route) { PantallaInicial(navController) }
-                    composable(Pantallas.IniciarSesion.route) { IniciarSesion(navController) }
-                    composable(Pantallas.Registrarse.route) { Registrarse(navController) }
+                    composable(Pantallas.IniciarSesion.route) { IniciarSesion(navController, iniciarSesionViewModel) }
+                    composable(Pantallas.Registrarse.route) { Registrarse(navController, registrarseViewModel) }
                     composable(Pantallas.MenuPrincipal.route) { MenuPrincipal(navController) }
                     composable(Pantallas.Menu.route) { Menu(navController) }
                     composable(Pantallas.RegistrationScreen.route) { RegistrationScreen(navController) }
                     composable(Pantallas.Actualizar.route) { Actualizar(navController) }
-                    composable("reservar") { ReservarScreen(navController, parkingSpaces) }
+                    composable("reservar") { ReservarScreen(navController, parkingViewModel.parkingSpaces) }
                     composable("cerrarSesion") { CerrarSessionScreen(navController) }
-                    composable("mapa") { MapaScreen(navController, parkingSpaces) }
+                    composable("mapa") { MapaScreen(navController, parkingViewModel.parkingSpaces) }
+                    composable("informacion") { InformacionScreen() }
                 }
             }
         }
@@ -99,10 +107,9 @@ fun PantallaInicial(navController: NavController) {
 }
 
 @Composable
-fun IniciarSesion(navController: NavController) {
-    val usuario = remember { mutableStateOf("") }
-    val contrasena = remember { mutableStateOf("") }
-
+fun IniciarSesion(navController: NavController, iniciarSesionViewModel: IniciarSesionViewModel) {
+    val usuario = iniciarSesionViewModel.usuario
+    val contrasena = iniciarSesionViewModel.contrasena
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -130,10 +137,10 @@ fun IniciarSesion(navController: NavController) {
 }
 
 @Composable
-fun Registrarse(navController: NavController) {
-    val usuario = remember { mutableStateOf("") }
-    val contrasena = remember { mutableStateOf("") }
-    val confirmarContrasena = remember { mutableStateOf("") }
+fun Registrarse(navController: NavController, registrarseViewModel: RegistrarseViewModel) {
+    val usuario = registrarseViewModel.usuario
+    val contrasena = registrarseViewModel.contrasena
+    val confirmarContrasena = registrarseViewModel.confirmarContrasena
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -203,7 +210,7 @@ fun Menu(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         BotonMenu(texto = "Informacion") {
-            navController.navigate("reservar")
+            navController.navigate("informacion")
         }
         Spacer(modifier = Modifier.height(16.dp))
         BotonMenu(texto = "Mapas") {
@@ -377,6 +384,9 @@ fun MenuPrincipal(navController: NavController) {
         BotonMenu(texto = "Ver Mapa") {
             navController.navigate("mapa")
         }
+        BotonMenu(texto = "Menu Principal") {
+            navController.navigate("Menu")
+        }
         BotonMenu(texto = "Cerrar Sesion") {
             navController.navigate("Cerrar Sesion")
         }
@@ -495,5 +505,40 @@ fun CerrarSessionScreen(navController: NavController) {
         shape = RoundedCornerShape(20.dp),
     ) {
 
+    }
+}
+
+@Composable
+fun InformacionScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(
+            text = "Información de la aplicación",
+        )
+
+        Text(
+            text = "Esta es una aplicación de estacionamiento desarrollada por el equipo XYZ. " +
+                    "La aplicación permite a los usuarios reservar espacios de estacionamiento y " +
+                    "ver el mapa del estacionamiento.",
+        )
+        Text(
+            text = "Desarrolladores:"
+        )
+
+        Text(
+            text = "1. Nesto Jaime"
+        )
+
+        Text(
+            text = "2. Jhon Diaz"
+        )
+        Text(
+            text = "2. Luis Mateo"
+        )
     }
 }

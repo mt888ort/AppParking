@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -20,19 +21,16 @@ class ParkingViewModel : ViewModel() {
 }
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PantallaParkingTheme {
-                val navController = rememberNavController()
-                val parkingViewModel: ParkingViewModel = viewModel()
-                NavHost(navController = navController, startDestination = "inicio") {
-                    composable("inicio") { PantallaInicial(navController) }
-                    composable("reservar") { ReservarScreen(navController, parkingViewModel.parkingSpaces) }
-                    composable("Cerrar Sesion") { CerrarSessionScreen(navController) }
-                    composable("mapa") { MapaScreen(navController, parkingViewModel.parkingSpaces) }
-                }
-            }
-        }
-    }
+
+}
+
+class IniciarSesionViewModel : ViewModel() {
+    val usuario = mutableStateOf("")
+    val contrasena = mutableStateOf("")
+}
+
+class RegistrarseViewModel : ViewModel() {
+    val usuario = mutableStateOf("")
+    val contrasena = mutableStateOf("")
+    val confirmarContrasena = mutableStateOf("")
 }

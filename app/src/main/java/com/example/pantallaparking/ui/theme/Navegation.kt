@@ -46,6 +46,7 @@ fun Navegacion() {
             false
         )
     }
+/*
     NavHost(navController = navHostController, startDestination = Pantallas.Inicio.route) {
         composable(route = Pantallas.Inicio.route) {
             PantallaInicial(navController = navHostController)
@@ -77,5 +78,5 @@ fun Navegacion() {
         composable(route = Pantallas.Mapa.route) {
             MapaScreen(navController = navHostController, parkingSpaces = parkingSpaces)
         }
-    }
+    }*/
 }
